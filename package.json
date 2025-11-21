@@ -1,0 +1,28 @@
+{
+  "name": "dargiebotv3",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/MarkDargie/DargieBotV3#readme",
+  "bugs": {
+    "url": "https://github.com/MarkDargie/DargieBotV3/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MarkDargie/DargieBotV3.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.2.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1"
+  }
+}
