@@ -1,14 +1,14 @@
 {
-  "name": "dargiebotv3",
+  "name": "chiralbot",
   "version": "1.0.0",
   "description": "",
-  "homepage": "https://github.com/MarkDargie/DargieBotV3#readme",
+  "homepage": "https://github.com/MarkDargie/ChiralBot#readme",
   "bugs": {
-    "url": "https://github.com/MarkDargie/DargieBotV3/issues"
+    "url": "https://github.com/MarkDargie/ChiralBot/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MarkDargie/DargieBotV3.git"
+    "url": "git+https://github.com/MarkDargie/ChiralBot.git"
   },
   "license": "ISC",
   "author": "",

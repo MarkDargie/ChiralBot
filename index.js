@@ -34,8 +34,8 @@ LoadCommands(client.commands);
 
 // runs once when client is ready
 client.once(Events.ClientReady, (c) => {
-  console.log(`DargieBotV3 Ready ! - Currently Logged in as ${c.user.tag}`);
-  console.log("Listening for commands...");
+  console.log(`ChiralBot, Link Established ! - Currently Logged in as ${c.user.tag}`);
+  console.log("Listening...");
 
   //set client presence status
   client.user.setPresence({
