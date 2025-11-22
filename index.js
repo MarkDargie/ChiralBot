@@ -34,7 +34,7 @@ LoadCommands(client.commands);
 
 // runs once when client is ready
 client.once(Events.ClientReady, (c) => {
-  console.log(`ChiralBot, Link Established ! - Currently Logged in as ${c.user.tag}`);
+  console.log(`ChiralBot - Link Established - Currently Logged in as ${c.user.tag}`);
   console.log("Listening...");
 
   //set client presence status
@@ -57,7 +57,9 @@ client.on(Events.InteractionCreate, async (int) => {
   try {
     await command.execute(int);
   } catch (error) {
+    
     console.error(error);
+
     if (int.replied || int.deferred) {
       await int.followUp({
         content: "There was an error while executing this command!",
