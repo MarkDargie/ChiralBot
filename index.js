@@ -1,7 +1,13 @@
-const { Client, Events, GatewayIntentBits, Collection, ActivityType } = require("discord.js");
+const {
+  Client,
+  Events,
+  GatewayIntentBits,
+  Collection,
+  ActivityType,
+} = require("discord.js");
 const dotenv = require("dotenv");
 
-const {LoadCommands} = require('./library/command-loader');
+const { LoadCommands } = require("./library/command-loader");
 
 // set env config
 dotenv.config();
@@ -28,45 +34,43 @@ LoadCommands(client.commands);
 
 // runs once when client is ready
 client.once(Events.ClientReady, (c) => {
-    console.log(`DargieBotV3 Ready ! - Currently Logged in as ${c.user.tag}`);
-    console.log("Listening for commands...");
+  console.log(`DargieBotV3 Ready ! - Currently Logged in as ${c.user.tag}`);
+  console.log("Listening for commands...");
 
-    //set client presence status
-    client.user.setPresence({
-        ctivities: [{ name: `$help`, type: ActivityType.Listening }]
-    });
-}); 
-
-// Handle message reading & execute commands
-client.on('messageCreate', msg => {
-
-    if(!msg.content.startsWith(commandPrefix)) return;
-
-    // main message handle logic
-    try {
-        if(msg.content.startsWith(commandPrefix)){
-            const args = msg.content.slice(commandPrefix.length).trim().split(/ +/g);
-            const commandName = args.shift();
-            const command = client.commands.get(commandName.toLowerCase());
-
-            if(!command) return msg.reply({content: UnknownCommand});
-
-            // if collection are required, call alt execute method
-            if(command.collectionsRequired)
-            {
-                return command.execute(msg, client, args);
-            }
-
-            // default execute commands
-            return command.execute(msg, client, args);
-        }
-    }
-    catch(e){
-        console.log("Error reading messages: ", e);
-    }
+  //set client presence status
+  client.user.setPresence({
+    ctivities: [{ name: `$help`, type: ActivityType.Listening }],
+  });
 });
 
+// Handle message reading & execute slash commands
+client.on(Events.InteractionCreate, async (int) => {
+  if (!int.isChatInputCommand()) return;
+
+  const command = int.client.commands.get(int.commandName);
+
+  if (!command) {
+    console.error(`No command matching ${int.commandName} was found.`);
+    return;
+  }
+
+  try {
+    await command.execute(int);
+  } catch (error) {
+    console.error(error);
+    if (int.replied || int.deferred) {
+      await int.followUp({
+        content: "There was an error while executing this command!",
+        flags: MessageFlags.Ephemeral,
+      });
+    } else {
+      await int.reply({
+        content: "There was an error while executing this command!",
+        flags: MessageFlags.Ephemeral,
+      });
+    }
+  }
+});
 
 // Log in to Discord with your client's token
 client.login(process.env.TOKEN);
-
