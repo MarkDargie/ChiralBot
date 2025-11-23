@@ -1,7 +1,7 @@
-const { Events, MessageFlags } = require("discord.js");
+import { Events, MessageFlags } from "discord.js";
 // Import the Events enum (for event names) and MessageFlags (for things like ephemeral replies)
 
-module.exports = {
+export default {
   // This handler listens for *any* interaction that happens (slash commands, buttons, etc.)
   name: Events.InteractionCreate,
 

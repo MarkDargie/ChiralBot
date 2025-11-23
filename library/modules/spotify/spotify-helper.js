@@ -1,5 +1,5 @@
-const fetch = require("node-fetch").default;
-const dotenv = require("dotenv");
+import fetch from "node-fetch";
+import dotenv from "dotenv";
 
 // Load environment variables from .env
 dotenv.config();
@@ -19,14 +19,12 @@ const CheckValidAccessToken = () => {
 };
 
 // Get (or refresh) an app-level access token using Client Credentials flow
-const GetAccessToken = async () => {
+export const GetAccessToken = async () => {
   // Reuse token if still valid
   if (CheckValidAccessToken()) return accessToken;
 
   // Build Basic auth header: base64(clientId:clientSecret)
-  const authString = Buffer.from(`${clientId}:${clientSecret}`).toString(
-    "base64"
-  );
+  const authString = Buffer.from(`${clientId}:${clientSecret}`).toString("base64");
 
   const res = await fetch("https://accounts.spotify.com/api/token", {
     method: "POST",
@@ -42,7 +40,6 @@ const GetAccessToken = async () => {
   if (!res.ok) throw new Error("Error getting spotify auth token");
 
   const data = await res.json();
-
   const now = Date.now();
 
   // Store token + expiry (minus a small safety buffer)
@@ -54,39 +51,34 @@ const GetAccessToken = async () => {
 };
 
 // Get full playlist metadata (name, owner, tracks info, etc.)
-const GetUserPlaylist = async (playlistId) => {
+export const GetUserPlaylist = async (playlistId) => {
   const accessToken = await GetAccessToken();
 
   console.log(`[GET] - User Playlist: ${playlistId}`);
 
-  const res = await fetch(
-    `https://api.spotify.com/v1/playlists/${playlistId}`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+  const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
 
-  console.log("[RESPONSE] - Playlist - Response Status: ", res.status);
+  console.log("[RESPONSE] - Playlist - Response Status:", res.status);
 
   if (!res.ok)
     throw new Error(`[ERROR] - Error getting spotify playlist - ${playlistId}`);
 
-  const data = await res.json();
-  return data;
+  return res.json();
 };
 
 // Get tracks for a playlist, with limit + offset for pagination
-const GetUserPlaylistTracks = async (playlistId, limit, offset) => {
+export const GetUserPlaylistTracks = async (playlistId, limit, offset) => {
   const accessToken = await GetAccessToken();
 
   console.log(`[GET] - User Playlist Tracks: ${playlistId}`);
 
   // Build query string params for limit/offset
   const params = new URLSearchParams();
-
   if (limit !== undefined) params.append("limit", String(limit));
   if (offset !== undefined) params.append("offset", String(offset));
 
@@ -99,18 +91,12 @@ const GetUserPlaylistTracks = async (playlistId, limit, offset) => {
     },
   });
 
-  console.log("[RESPONSE] - Playlist Tracks - Response Status: ", res.status);
+  console.log("[RESPONSE] - Playlist Tracks - Response Status:", res.status);
 
   if (!res.ok)
-    throw new Error(`[ERROR] - Error getting spotify playlist tracks - ${playlistId}`);
+    throw new Error(
+      `[ERROR] - Error getting spotify playlist tracks - ${playlistId}`
+    );
 
-  const data = await res.json();
-  return data;
-};
-
-// Export helpers for use in commands/other modules
-module.exports = {
-  GetAccessToken,
-  GetUserPlaylist,
-  GetUserPlaylistTracks,
+  return res.json();
 };
