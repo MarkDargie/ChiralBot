@@ -3,8 +3,6 @@ const fs = require("fs/promises");
 const ConvertObjectArrayToCSV = (rows, headers) => {
   if (!rows || rows.length === 0) return "";
 
-  console.log('CONVERTING TRACKS TO CSV', rows.length, headers);
-
   // If no headers passed, use keys from first object
   const cols = headers || Object.keys(rows[0]);
 
