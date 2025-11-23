@@ -1,9 +1,8 @@
-const fs = require("fs/promises");
-
-const ConvertObjectArrayToCSV = (rows, headers) => {
+// Convert an array of objects into a CSV string
+export const ConvertObjectArrayToCSV = (rows, headers) => {
   if (!rows || rows.length === 0) return "";
 
-  // If no headers passed, use keys from first object
+  // If no headers passed, use keys from the first object
   const cols = headers || Object.keys(rows[0]);
 
   const escape = (value) => {
@@ -13,7 +12,7 @@ const ConvertObjectArrayToCSV = (rows, headers) => {
     // Escape quotes by doubling them
     const escaped = str.replace(/"/g, '""');
 
-    // If it contains comma, quote or newline, wrap in quotes
+    // Wrap in quotes if it contains commas, quotes, or newlines
     if (/[",\n]/.test(escaped)) {
       return `"${escaped}"`;
     }
@@ -33,8 +32,4 @@ const ConvertObjectArrayToCSV = (rows, headers) => {
   }
 
   return lines.join("\n");
-};
-
-module.exports = {
-  ConvertObjectArrayToCSV,
 };
