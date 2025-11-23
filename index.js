@@ -6,8 +6,12 @@ const {
   ActivityType,
 } = require("discord.js");
 const dotenv = require("dotenv");
+const fs = require("node:fs");
+const path = require("node:path");
 
-const { LoadCommands } = require("./library/command-loader");
+
+const commandsPath = path.join(__dirname, './library/commands/');
+const { LoadCommands } = require("./library/command-loader.js");
 
 // set env config
 dotenv.config();
