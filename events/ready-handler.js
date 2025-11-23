@@ -1,0 +1,20 @@
+const { Events, ActivityType } = require("discord.js");
+// Import Discord's built-in event names so we don't typo them
+
+module.exports = {
+  // This event file handles the "ClientReady" event
+  name: Events.ClientReady, // The event name this module listens for
+  once: true, // Run only once (fires when the bot successfully logs in)
+  /**
+   * Executed when the Discord client is fully connected and ready.
+   * @param {Client} client - The logged-in Discord client instance.
+   */
+  execute(client) {
+    // Log a simple ready message using the bot's username + discriminator
+    console.log(`Ready! Logged in as ${client.user.tag}`);
+    // Set bot's status shown in user list
+    client.user.setPresence({
+      activities: [{ name: `Listening`, type: ActivityType.Listening }],
+    });
+  },
+};
