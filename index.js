@@ -38,48 +38,26 @@ LoadCommands(client.commands);
 // register all commands to guild from /commands directories
 RegisterCommands();
 
-// runs once when client is ready
-client.once(Events.ClientReady, (c) => {
-  console.log(
-    `ChiralBot - Link Established - Currently Logged in as ${c.user.tag}`
-  );
-  console.log("Listening...");
+// Build an absolute path to the ./events folder (where all your event files live)
+const eventsPath = path.join(__dirname, 'events');
+// Read all files in the events folder and only keep the .js ones
+const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith('.js'));
 
-  //set client presence status
-  client.user.setPresence({
-    activities: [{ name: `Listening`, type: ActivityType.Listening }],
-  });
-});
+for (const file of eventFiles) {
+	// Full path to the current event file
+	const filePath = path.join(eventsPath, file);
 
-// Handle message reading & execute slash commands
-client.on(Events.InteractionCreate, async (int) => {
-  if (!int.isChatInputCommand()) return;
+	// Import the event module (should export: name, execute, and optionally once)
+	const event = require(filePath);
 
-  const command = int.client.commands.get(int.commandName);
-
-  if (!command) {
-    console.error(`No command matching ${int.commandName} was found.`);
-    return;
-  }
-
-  try {
-    await command.execute(int);
-  } catch (error) {
-    console.error(error);
-
-    if (int.replied || int.deferred) {
-      await int.followUp({
-        content: "There was an error while executing this command!",
-        flags: MessageFlags.Ephemeral,
-      });
-    } else {
-      await int.reply({
-        content: "There was an error while executing this command!",
-        flags: MessageFlags.Ephemeral,
-      });
-    }
-  }
-});
+	// If the event should only fire once (e.g. ready), use client.once
+	if (event.once) {
+		client.once(event.name, (...args) => event.execute(...args));
+	} else {
+		// Otherwise, attach a regular listener that fires every time the event occurs
+		client.on(event.name, (...args) => event.execute(...args));
+	}
+}
 
 // Log in to Discord with your client's token
 client.login(process.env.TOKEN);
