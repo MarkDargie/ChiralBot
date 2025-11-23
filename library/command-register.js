@@ -1,32 +1,31 @@
-const { Collection } = require("discord.js");
-const fs = require("node:fs");               
-const path = require("node:path");           
+const { REST, Routes } = require("discord.js");
+const fs = require("node:fs");
+const path = require("node:path");
+const dotenv = require("dotenv");
+
+// set env config
+dotenv.config();
+
+// Construct and prepare an instance of the REST module
+const rest = new REST().setToken(process.env.TOKEN);
 
 // Absolute path to the ./commands folder (relative to this file)
 const commandsPath = path.join(__dirname, "./commands");
 
+const commands = [];
+
 module.exports = {
-  /**
-   * Load all command files from subfolders of ./commands
-   * and register them into the provided commandCollection.
-   *
-   * @param {Collection} commandCollection - The collection to store commands in.
-   */
-  LoadCommands(commandCollection) {
+  async RegisterCommands() {
     try {
       // Read the contents of the commands directory (async)
       fs.readdir(commandsPath, { withFileTypes: true }, (err, entries) => {
         if (err) return;
-
-        console.log(`Started loading commands for path: ${commandsPath}`);
 
         // Loop through everything inside ./commands
         for (const entry of entries) {
           // Only process subdirectories (e.g. ./commands/fun, ./commands/moderation)
           if (entry.isDirectory()) {
             const fullPath = path.join(commandsPath, entry.name);
-
-            console.log(`Loading commands for directory: ${entry.name}`)
 
             // Read all files inside that subdirectory (sync)
             // and only keep .js files
@@ -41,10 +40,9 @@ module.exports = {
               // Require the command module
               const command = require(filePath);
 
-              // Command must export both `data` (SlashCommandBuilder) and `execute` (handler)
               if ("data" in command && "execute" in command) {
                 // Use the command name as the key in the collection
-                commandCollection.set(command.data.name, command);
+                commands.push(command.data.toJSON());
               } else {
                 // If command is malformed, warn but keep going
                 console.log(
@@ -54,10 +52,33 @@ module.exports = {
             }
           }
         }
+        // deploy commands to bot service via Routes & environment Guild & Client Ids
+        (async () => {
+          try {
+            console.log(
+              `Started refreshing ${commands.length} application (/) commands.`
+            );
+
+            // fully refresh all commands in the guild with the current set
+            const data = await rest.put(
+              Routes.applicationGuildCommands(
+                process.env.CLIENT,
+                process.env.GUILD
+              ),
+              { body: commands }
+            );
+
+            console.log(
+              `Successfully reloaded ${data.length} application (/) commands.`
+            );
+          } catch (error) {
+            console.error(error);
+          }
+        })();
       });
     } catch (e) {
-      // Catch any unexpected errors thrown while loading commands
-      console.log("Error loading commands", e);
+      // Catch any unexpected errors thrown while registering commands
+      console.log("Error registering commands", e);
     }
   },
 };
