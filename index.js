@@ -6,8 +6,12 @@ const {
   ActivityType,
 } = require("discord.js");
 const dotenv = require("dotenv");
+const fs = require("node:fs");
+const path = require("node:path");
 
-const { LoadCommands } = require("./library/command-loader");
+const commandsPath = path.join(__dirname, "./library/commands/");
+const { LoadCommands } = require("./library/command-loader.js");
+const { RegisterCommands } = require("./library/command-register.js");
 
 // set env config
 dotenv.config();
@@ -31,15 +35,19 @@ const commandPrefix = "$";
 
 // load all commands from /commands directories
 LoadCommands(client.commands);
+// register all commands to guild from /commands directories
+RegisterCommands();
 
 // runs once when client is ready
 client.once(Events.ClientReady, (c) => {
-  console.log(`ChiralBot, Link Established ! - Currently Logged in as ${c.user.tag}`);
+  console.log(
+    `ChiralBot - Link Established - Currently Logged in as ${c.user.tag}`
+  );
   console.log("Listening...");
 
   //set client presence status
   client.user.setPresence({
-    ctivities: [{ name: `$help`, type: ActivityType.Listening }],
+    activities: [{ name: `Listening`, type: ActivityType.Listening }],
   });
 });
 
@@ -58,6 +66,7 @@ client.on(Events.InteractionCreate, async (int) => {
     await command.execute(int);
   } catch (error) {
     console.error(error);
+
     if (int.replied || int.deferred) {
       await int.followUp({
         content: "There was an error while executing this command!",
