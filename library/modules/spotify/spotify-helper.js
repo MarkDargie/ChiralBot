@@ -49,7 +49,7 @@ const GetAccessToken = async () => {
 const GetUserPlaylist = async (playlistId) => {
   const accessToken = await GetAccessToken();
 
-  console.log(`Getting User Playlist: ${playlistId}`)
+  console.log(`Getting User Playlist: ${playlistId}`);
 
   const res = await fetch(
     `https://api.spotify.com/v1/playlists/${playlistId}`,
@@ -70,7 +70,36 @@ const GetUserPlaylist = async (playlistId) => {
   return data;
 };
 
+const GetUserPlaylistTracks = async (playlistId) => {
+  const accessToken = await GetAccessToken();
+
+  console.log(`Getting User Playlist Tracks: ${playlistId}`);
+
+  const res = await fetch(
+    `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
+
+  console.log("Get Playlist Tracks - Response Status: ", res.status);
+
+  if (!res.ok)
+    throw new Error(`Error getting spotify playlist tracks - ${playlistId}`);
+
+  const data = await res.json();
+
+  console.log('--- TRACKS: ', data);
+
+  return data;
+
+};
+
 module.exports = {
   GetAccessToken,
   GetUserPlaylist,
+  GetUserPlaylistTracks
 };
