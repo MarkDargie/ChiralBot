@@ -59,10 +59,9 @@ export default {
       setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
       // Execute the command's logic
       await command.execute(interaction);
-    } catch (error) {
+    } catch (e) {
       // Log the error for debugging
-      console.error(error);
-
+      console.error('[ERROR] Error processing user message for handler [InteractionCreate]', e);
       // If we've already replied or deferred, we have to use followUp instead of reply
       if (interaction.replied || interaction.deferred) {
         await interaction.followUp({
