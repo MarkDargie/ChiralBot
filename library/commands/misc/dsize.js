@@ -11,7 +11,7 @@ export default {
       let size = Math.floor(Math.random() * 14);
 
       if (interaction.member.id === "189774027450089472") {
-        response = `You're Penis is 0 inches ` + " 😂👎";
+        response = `Your Penis is 0 inches ` + " 😂👎";
       }
 
       if (interaction.member.id === "100895145037148160") {
@@ -19,13 +19,13 @@ export default {
       }
 
       if (size <= 4) {
-        response = `You're Penis is ${size} inches ` + " 😂👎";
+        response = `Your Penis is ${size} inches ` + " 😂👎";
       } else if (size >= 5 && size < 7) {
-        response = `You're Penis is ${size} inches ` + " 😏👍";
+        response = `Your Penis is ${size} inches ` + " 😏👍";
       } else if (size >= 7 && size < 10) {
-        response = `You're Penis is ${size} inches ` + " 😘👌";
+        response = `Your Penis is ${size} inches ` + " 😘👌";
       } else if (size >= 10) {
-        response = `You're Penis is ${size} inches ` + " 😍🍆💦";
+        response = `Your Penis is ${size} inches ` + " 😍🍆💦";
       } else {
         return;
       }

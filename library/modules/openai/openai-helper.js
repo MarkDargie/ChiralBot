@@ -23,6 +23,7 @@ export const AskBasic = async (userInputString) => {
       model: selecteModel,
       // tools: [{ type: "web_search" }], // optional tools if you want web search later
       input: userInputString, // the user's question / message
+      max_output_tokens: 1000,
     });
 
     // Log some info about the response so you can see what's happening
@@ -33,6 +34,7 @@ export const AskBasic = async (userInputString) => {
 
     // Only return text if the response completed successfully
     if (response.status === "completed") return response.output_text;
+    if (response.status === "failed") return "I have no idea what you're talking about.";
   } catch (e) {
     // Catch and log any errors so they don't crash the bot
     console.log(
