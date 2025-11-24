@@ -21,11 +21,11 @@ export function LoadCommands(commandCollection) {
     // Read the contents of the commands directory (async)
     fs.readdir(commandsPath, { withFileTypes: true }, async (err, entries) => {
       if (err) {
-        console.log("Error reading commands directory:", err);
+        console.log("[ERROR] Error reading commands directory:", err);
         return;
       }
 
-      console.log(`Started loading commands for path: ${commandsPath}`);
+      console.log(`[PROCESS] Started loading commands for path: ${commandsPath}`);
 
       // Loop through everything inside ./commands
       for (const entry of entries) {
@@ -33,7 +33,7 @@ export function LoadCommands(commandCollection) {
         if (entry.isDirectory()) {
           const fullPath = path.join(commandsPath, entry.name);
 
-          console.log(`Loading commands for directory: ${entry.name}`);
+          console.log(`[PROCESS] Loading commands for directory: ${entry.name}`);
 
           // Read all files inside that subdirectory (sync)
           // and only keep .js files
@@ -70,7 +70,7 @@ export function LoadCommands(commandCollection) {
       }
     });
   } catch (e) {
-    console.log("Error loading commands", e);
+    console.log("[ERROR] Error loading commands", e);
   }
 }
 

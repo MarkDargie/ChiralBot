@@ -24,7 +24,7 @@ export async function RegisterCommands() {
     // Read the contents of the commands directory (async)
     fs.readdir(commandsPath, { withFileTypes: true }, async (err, entries) => {
       if (err) {
-        console.log("Error reading commands directory:", err);
+        console.log("[ERROR] error reading commands directory:", err);
         return;
       }
 
@@ -73,7 +73,7 @@ export async function RegisterCommands() {
       (async () => {
         try {
           console.log(
-            `Started refreshing ${commands.length} application (/) commands.`
+            `[PROCESS] Started refreshing ${commands.length} application (/) commands.`
           );
 
           // fully refresh all commands in the guild with the current set
@@ -86,7 +86,7 @@ export async function RegisterCommands() {
           );
 
           console.log(
-            `Successfully reloaded ${data.length} application (/) commands.`
+            `[PROCESS] Successfully reloaded ${data.length} application (/) commands.`
           );
         } catch (error) {
           console.error(error);
@@ -95,7 +95,7 @@ export async function RegisterCommands() {
     });
   } catch (e) {
     // Catch any unexpected errors thrown while registering commands
-    console.log("Error registering commands", e);
+    console.log("[ERROR] Error registering commands", e);
   }
 }
 

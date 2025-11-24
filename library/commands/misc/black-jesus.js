@@ -2,8 +2,9 @@ import { SlashCommandBuilder, AttachmentBuilder } from "discord.js";
 import config from "../../../config/config.json" with { type: "json" };
 
 const { BlackJesusURL } = config;
-
+//86400
 export default {
+  cooldown: 86400,
   data: new SlashCommandBuilder()
     .setName("blackjesus")
     .setDescription("Consult the lord."),

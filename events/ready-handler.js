@@ -12,7 +12,7 @@ export default {
    */
   execute(client) {
     // Log a simple ready message using the bot's username + discriminator
-    console.log(`Ready! Logged in as ${client.user.tag}`);
+    console.log(`[READY] Logged in as ${client.user.tag}`);
 
     // Set bot's status shown in user list
     client.user.setPresence({
