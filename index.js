@@ -1,9 +1,7 @@
 import {
   Client,
-  Events,
   GatewayIntentBits,
-  Collection,
-  ActivityType,
+  Collection
 } from "discord.js";
 import dotenv from "dotenv";
 import fs from "node:fs";
@@ -31,10 +29,10 @@ const client = new Client({
 
 // Set Collections
 client.commands = new Collection();
-const cooldowns = new Map();
+client.cooldowns = new Collection();
 
 // Command prefix checked in client.on messageCreate
-const commandPrefix = "$";
+// const commandPrefix = "$";
 
 // Load all commands from /commands directories
 LoadCommands(client.commands);
