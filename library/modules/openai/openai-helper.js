@@ -7,7 +7,10 @@ const client = new OpenAI({
 });
 
 // Model to use for the request (typo in name is harmless, just a variable name)
-const selecteModel = "gpt-5";
+const selecteModel = "gpt-5-nano";
+const maxOutputTokens = 2500;
+const effortOptions = ['low', 'medium','high'];
+const errorResponseMesssage = "Sorry, I am unable to efficiently answer you as I have severe autism and I'm currently in sensory overload state.";
 
 // Simple helper function to send a basic question to OpenAI
 export const AskBasic = async (userInputString) => {
@@ -21,9 +24,10 @@ export const AskBasic = async (userInputString) => {
     // Create a completion/response using the Responses API
     const response = await client.responses.create({
       model: selecteModel,
-      // tools: [{ type: "web_search" }], // optional tools if you want web search later
+      reasoning: {"effort" : effortOptions[0]},
       input: userInputString, // the user's question / message
-      max_output_tokens: 1000,
+      max_output_tokens: maxOutputTokens,
+      // tools: [{ type: "web_search" }], // optional tools if you want web search later
     });
 
     // Log some info about the response so you can see what's happening
@@ -32,9 +36,10 @@ export const AskBasic = async (userInputString) => {
       `${response.status} - ${response.model} - ${response.output_text}`
     );
 
-    // Only return text if the response completed successfully
+    // return output text if the response completed successfully
     if (response.status === "completed") return response.output_text;
-    if (response.status === "failed") return "I have no idea what you're talking about.";
+    // return default message back on failure or incomplete responses
+    if (response.status === "failed" || response.status === "incomplete") return errorResponseMesssage;
   } catch (e) {
     // Catch and log any errors so they don't crash the bot
     console.log(
