@@ -14,7 +14,7 @@ export default {
         .setName("agent") // select which agent to use
         .setDescription("Choose which AI agent to use.")
         .setRequired(true)
-        .addChoices({ name: "GPT", value: "GPT" }, {name:'CHIRAL', value: 'CHIRAL'})
+        .addChoices({ name: "GPT", value: "GPT" }, {name:'PHI3', value: 'PHI3'})
     )
     .addStringOption((option) =>
       option
@@ -40,7 +40,7 @@ export default {
         // handle GPT-OPENAI requests
         if(interaction.options.getString("agent") === "GPT" && normalisedMessage) {
             // Immediately reply so Discord doesn't think the bot is dead
-            await interaction.reply({ content: `gpt is thinking...` });
+            await interaction.reply({ content: `thinking...` });
 
             // Ask OpenAI (wrapped in your helper function)
             const openAiResponse = await AskBasic(normalisedMessage);
@@ -53,9 +53,9 @@ export default {
             }
         }
         // handle PHI3-OLLAMA / CHIRAL requests
-        if(interaction.options.getString("agent") === "CHIRAL" && normalisedMessage){
+        if(interaction.options.getString("agent") === "PHI3" && normalisedMessage){
             // Immediately reply so Discord doesn't think the bot is dead
-            await interaction.reply({ content: `chiral is thinking...` });
+            await interaction.reply({ content: `thinking...` });
 
             const ollamaResponse = await AskLocalPhi3(normalisedMessage);
 
