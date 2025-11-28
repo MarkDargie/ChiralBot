@@ -16,7 +16,7 @@ export default {
 
     // Set bot's status shown in user list
     client.user.setPresence({
-      activities: [{ name: `Listening`, type: ActivityType.Listening }],
+      activities: [{ name: `Always Listening`, type: ActivityType.Listening }],
     });
   },
 };

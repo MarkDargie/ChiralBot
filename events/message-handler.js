@@ -11,6 +11,7 @@ export default {
   // `interaction` here is actually a Message object (Discord.js Message)
   async execute(interaction) {
     try {
+      //console.log('[TEST] Test Read', interaction);
       // Basic null/undefined safety check
       if (interaction) {
         // Store some useful info from the original message
