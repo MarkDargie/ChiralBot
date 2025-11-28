@@ -14,6 +14,8 @@ export default {
     // Log a simple ready message using the bot's username + discriminator
     console.log(`[READY] Logged in as ${client.user.tag}`);
 
+    console.log('[READY] Reminders Client: ', client.reminders);
+
     // Set bot's status shown in user list
     client.user.setPresence({
       activities: [{ name: `Always Listening`, type: ActivityType.Listening }],

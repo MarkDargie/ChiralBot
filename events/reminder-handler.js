@@ -5,12 +5,12 @@ export default {
   // This event file handles the "ClientReady" event
   name: Events.MessageCreate, // The event name this module listens for
   customType: CustomEvent.Reminder,
-  async execute(interaction, reminders) {
+  async execute(interaction) {
     console.log(`[READY] Awaiting Server Reminder Events.`);
 
     if(interaction){
         console.log('[REMINDER] Test Interaction: ', interaction.id);
-        console.log('[REMINDER] Test Reminders: ', reminders);
+        console.log('[REMINDER] Test Reminders: ', interaction.client.reminders);
     }
 
 
