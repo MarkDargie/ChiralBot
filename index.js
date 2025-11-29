@@ -9,7 +9,6 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { LoadCommands } from "./library/command-loader.js";
 import { RegisterCommands } from "./library/command-register.js";
-import { CustomEvent } from './config/event.type.js';
 
 // Load env vars from .env
 dotenv.config();

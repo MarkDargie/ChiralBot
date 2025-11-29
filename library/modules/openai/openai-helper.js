@@ -11,6 +11,7 @@ const selecteModel = "gpt-5-nano";
 const maxOutputTokens = 2500;
 const effortOptions = ['low', 'medium','high'];
 const errorResponseMesssage = "Sorry, I am unable to efficiently answer you as I have severe autism and I'm currently in sensory overload state.";
+const promptPretense = "Do not go over 2000 characters in your responses. That is your absolute character limit, no exceptions.";
 
 // Simple helper function to send a basic question to OpenAI
 export const AskBasic = async (userInputString) => {
@@ -21,11 +22,13 @@ export const AskBasic = async (userInputString) => {
       userInputString
     );
 
+    const inputString = `${promptPretense} - User Prompt: ${userInputString}`;
+
     // Create a completion/response using the Responses API
     const response = await client.responses.create({
       model: selecteModel,
       reasoning: {"effort" : effortOptions[0]},
-      input: userInputString, // the user's question / message
+      input: inputString, // the user's question / message
       max_output_tokens: maxOutputTokens,
       // tools: [{ type: "web_search" }], // optional tools if you want web search later
     });

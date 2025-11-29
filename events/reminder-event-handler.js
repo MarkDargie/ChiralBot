@@ -9,8 +9,8 @@ export default {
     console.log(`[READY] Awaiting Server Reminder Events.`);
 
     if(interaction){
-        console.log('[REMINDER] Test Interaction: ', interaction.id);
-        console.log('[REMINDER] Test Reminders: ', interaction.client.reminders);
+        // console.log('[REMINDER] Test Interaction: ', interaction.id);
+        // console.log('[REMINDER] Test Reminders: ', interaction.client.reminders);
     }
 
 

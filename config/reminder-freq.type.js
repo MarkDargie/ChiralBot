@@ -5,6 +5,6 @@ const ReminderFrequency = {
     MONTHLY: "M"
 }
 
-export default {
+export {
     ReminderFrequency
 }

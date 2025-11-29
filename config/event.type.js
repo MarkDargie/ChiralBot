@@ -2,6 +2,6 @@ const CustomEvent = {
     Reminder: "reminderHandler"
 }
 
-export default {
+export {
     CustomEvent
 }
