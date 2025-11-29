@@ -23,11 +23,7 @@ export const ProcessReminderDate = (reminderDate, reminderTime) => {
       });
     }
 
-    console.log("Processed Date Step 2: ", formattedDate);
-
-    console.log("Processed Date Step 3: ", formattedDate.format(momentExportFormat).toString());
-
-    return formattedDate.format(momentExportFormat).toString()
+    return formattedDate.format(momentExportFormat).toString();
   } catch (e) {
     console.log(
       "[REMINDER-HANDLER] error processing reminder date and time",
@@ -38,38 +34,26 @@ export const ProcessReminderDate = (reminderDate, reminderTime) => {
 
 export const CheckValidReminderDate = (reminderDate) => {
   try {
-    //const formattedDate = new Date(reminderDate);
-
-    //const formattedDate = moment().format(reminderDate);
     const formattedDate = moment(reminderDate, momentDateFormats);
-
-    console.log("VALID DATE", formattedDate.toString());
-
-    if (formattedDate && formattedDate instanceof Date && !isNaN(formattedDate))
-      return true;
-
-    return false;
+    return formattedDate.isValid();
   } catch (e) {
     console.log(
       "[REMINDER-HANDLER] error processing reminder valid date check",
       e
     );
+    return false;
   }
 };
 
 export const CheckValidReminderTime = (reminderTime) => {
   try {
-    let date = new Date();
-
-    //console.log('VALID TIME BEFORE', date);
-
-    date.setHours(reminderTime);
-
-    //console.log('VALID TIME AFTER', date);
+    const formattedTime = moment(reminderTime, momentTimeFormats);
+    return formattedTime.isValid();
   } catch (e) {
     console.log(
       "[REMINDER-HANDLER] error processing reminder valid time check",
       e
     );
+    return false;
   }
 };
