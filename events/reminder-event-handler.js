@@ -12,16 +12,22 @@ export default {
 
       const reminders = client.reminders;
 
-      console.log("[READY] Ready with reminder: ", reminders)
-
       if (!reminders.has("server-reminders")) {
         reminders.set("server-reminders", new Collection());
         console.log("[READY] Setting Reminders: ", reminders);
       }
 
+      const serverReminders = client.reminders.get("server-reminders");
+
+      console.log("[READY] Ready with reminder: ", serverReminders)
+
       const databaseReminders = await GetRemindersAsync();
 
-      setInterval(async () => {}, 5000);
+      setInterval(async () => {
+        
+        console.log('[INTERVAL] Current Reminders Collection: ', serverReminders);
+
+      }, 5000);
     } catch (e) {
       console.log(
         "[ERROR] error processing event handler logic [ClientReady-ReminderEventHandler]",

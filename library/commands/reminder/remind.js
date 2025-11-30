@@ -68,9 +68,11 @@ export default {
             userid: userId,
             serverid: serverId,
           };
-
-          currentServerReminders.set(serverReminder);
+          // TODO need to figure out how we want to store these
+          // tb needs to store both value of reminder nad the datetime stamp
+          // 
           serverReminders.push(serverReminder);
+          currentServerReminders.set(userId, serverReminders);
         }
 
         await interaction.reply({
