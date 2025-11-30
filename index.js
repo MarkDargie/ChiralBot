@@ -30,7 +30,6 @@ const client = new Client({
 // Set Collections
 client.commands = new Collection();
 client.cooldowns = new Collection();
-let reminders = new Collection();
 client.reminders = new Collection();
 
 // Command prefix checked in client.on messageCreate

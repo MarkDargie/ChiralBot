@@ -1,19 +1,25 @@
 import { Events, ActivityType } from "discord.js";
-import { CustomEvent } from '../config/event.type.js';
+import { CustomEvent } from "../config/event.type.js";
+import { GetRemindersAsync } from "../database/database-handler.js";
 
 export default {
   // This event file handles the "ClientReady" event
-  name: Events.MessageCreate, // The event name this module listens for
+  name: Events.ClientReady, // The event name this module listens for
   customType: CustomEvent.Reminder,
-  async execute(interaction) {
-    console.log(`[READY] Awaiting Server Reminder Events.`);
+  async execute(client) {
+    try {
+      console.log(`[READY] Awaiting Server Reminder Events.`);
 
-    if(interaction){
-        // console.log('[REMINDER] Test Interaction: ', interaction.id);
-        // console.log('[REMINDER] Test Reminders: ', interaction.client.reminders);
+      console.log("[READY] CALLING DATABASE");
+
+      const reminders = await GetRemindersAsync();
+
+      setInterval(async () => {}, 5000);
+    } catch (e) {
+      console.log(
+        "[ERROR] error processing event handler logic [ClientReady-ReminderEventHandler]",
+        e
+      );
     }
-
-
-
   },
 };

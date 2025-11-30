@@ -1,7 +1,6 @@
 import { SlashCommandBuilder } from "discord.js";
 import { CheckValidReminderDate, CheckValidReminderTime, ProcessReminderDate } from "../../modules/reminders/reminder-handler.js";
 
-
 /* 
     reminders todo - 
     reminder frequency (weekly, montthy ect and every X days)
@@ -9,9 +8,7 @@ import { CheckValidReminderDate, CheckValidReminderTime, ProcessReminderDate } f
     allow to delete reminder by id ? (show unique id in the response when created)
     list all reminders 
     store the string as json in the collection ?
-
 */
-
 export default {
   cooldown: 10,
   // Slash command data that gets registered with Discord
@@ -44,7 +41,9 @@ export default {
     ),
   async execute(interaction) {
     try {
-      if (interaction) {
+      const {client} = interaction;
+      if (interaction && client) {
+
         const reminder = interaction.options.getString("reminder");
         const date = interaction.options.getString("date");
         const time = interaction.options.getString("time");

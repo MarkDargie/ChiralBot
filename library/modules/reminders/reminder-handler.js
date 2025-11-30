@@ -11,8 +11,6 @@ export const ProcessReminderDate = (reminderDate, reminderTime) => {
 
     formattedDate = moment(reminderDate, momentDateFormats);
 
-    console.log("Processed Date Step 1: ", formattedDate);
-
     if (reminderTime) {
       formattedTime = moment(reminderTime, momentTimeFormats);
       formattedDate.set({
