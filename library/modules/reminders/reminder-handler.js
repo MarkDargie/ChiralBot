@@ -1,9 +1,20 @@
 import moment from "moment";
 
+// setting contant formats to use for mapping
 const momentDateFormats = ["DD-MM-YYYY", "DD-MM-YY", "DD-MM"];
 const momentTimeFormats = ["HH:mm", "HHmm", "HH"];
 const momentExportFormat = "DD-MM-YYYY HH:mm";
 
+/**
+ * Parses and combines a reminder date and optional time using Moment.js.
+ * Accepts multiple input formats for date and time, merges them into a single Moment,
+ * normalizes the time (or leaves it at default if none provided), and returns
+ * a formatted date-time string using momentExportFormat. Logs errors if parsing fails.
+ *
+ * @param {string} reminderDate - The user-provided date string to parse.
+ * @param {string} [reminderTime] - Optional user-provided time string to merge with the date.
+ * @returns {string|undefined} A formatted date-time string, or undefined if an error occurs.
+ */
 export const ProcessReminderDate = (reminderDate, reminderTime) => {
   try {
     let formattedDate;
@@ -30,6 +41,14 @@ export const ProcessReminderDate = (reminderDate, reminderTime) => {
   }
 };
 
+/**
+ * Validates a reminder date string against the allowed Moment.js date formats.
+ * Attempts to parse the supplied date using momentDateFormats and returns whether
+ * the resulting Moment instance is considered valid.
+ *
+ * @param {string} reminderDate - The user-provided date string to validate.
+ * @returns {boolean} True if the date parses as a valid Moment, otherwise false.
+ */
 export const CheckValidReminderDate = (reminderDate) => {
   try {
     const formattedDate = moment(reminderDate, momentDateFormats);
@@ -43,6 +62,14 @@ export const CheckValidReminderDate = (reminderDate) => {
   }
 };
 
+/**
+ * Validates a reminder time string against the allowed Moment.js time formats.
+ * Attempts to parse the supplied time using momentTimeFormats and returns whether
+ * the resulting Moment instance is considered valid.
+ *
+ * @param {string} reminderTime - The user-provided time string to validate.
+ * @returns {boolean} True if the time parses as a valid Moment, otherwise false.
+ */
 export const CheckValidReminderTime = (reminderTime) => {
   try {
     const formattedTime = moment(reminderTime, momentTimeFormats);
