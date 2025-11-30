@@ -1,5 +1,8 @@
 import { SlashCommandBuilder } from "discord.js";
-import { CheckValidReminderDate, CheckValidReminderTime, ProcessReminderDate } from "../../modules/reminders/reminder-handler.js";
+import {
+  ProcessReminderDate,
+  InsertReminders,
+} from "../../modules/reminders/reminder-handler.js";
 
 /* 
     reminders todo - 
@@ -41,12 +44,12 @@ export default {
     ),
   async execute(interaction) {
     try {
-      const {client} = interaction;
+      const { client } = interaction;
       if (interaction && client) {
-
         const reminder = interaction.options.getString("reminder");
         const date = interaction.options.getString("date");
         const time = interaction.options.getString("time");
+        let serverReminders = [];
 
         const normalisedReminder = interaction.options
           .getString("reminder")
@@ -56,9 +59,27 @@ export default {
 
         const formattedDate = ProcessReminderDate(date, time);
 
+        if (client.reminders) {
+          const currentServerReminders = client.reminders.get("server-reminders");
+          const userId = interaction.member.id;
+          const serverId = process.env.GUILD;
+          const serverReminder = {
+            value: formattedDate,
+            userid: userId,
+            serverid: serverId,
+          };
+
+          currentServerReminders.set(serverReminder);
+          serverReminders.push(serverReminder);
+        }
+
         await interaction.reply({
-            content: `Reminder Set: ${formattedDate} :calendar_spiral:`
+          content: `Reminder Set: ${formattedDate} :calendar_spiral:`,
         });
+
+        if (serverReminders && serverReminders.length) {
+          await InsertReminders(serverReminders);
+        }
       }
     } catch (e) {
       console.log("[ERROR] Error processing user command - [remind]", e);

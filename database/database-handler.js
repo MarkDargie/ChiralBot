@@ -35,10 +35,11 @@ export async function InsertRemindersAsync(reminders) {
       createdserverid: x.serverid,
       active: true,
     }));
-    const remindersJson = JSON.stringify(mappedReminders);
-    const query = "CALL chiral.insert_reminders($1::jsonb);";
 
-    await pool.query(query, [remindersJson]);
+    const remindersJson = JSON.stringify(mappedReminders);
+    const query = "CALL chiral.insert_reminders($1::json);";
+
+    await ConnectionPool.query(query, [remindersJson]);
   } catch (e) {
     console.log(
       "[ERROR] error processing database request for [InsertRemindersAsync]",
@@ -46,3 +47,4 @@ export async function InsertRemindersAsync(reminders) {
     );
   }
 }
+

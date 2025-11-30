@@ -1,5 +1,5 @@
 import moment from "moment";
-
+import { GetRemindersAsync, InsertRemindersAsync } from "../../../database/database-handler.js";
 // setting contant formats to use for mapping
 const momentDateFormats = ["DD-MM-YYYY", "DD-MM-YY", "DD-MM"];
 const momentTimeFormats = ["HH:mm", "HHmm", "HH"];
@@ -40,6 +40,45 @@ export const ProcessReminderDate = (reminderDate, reminderTime) => {
     );
   }
 };
+
+/**
+ * Wrapper around GetRemindersAsync to fetch all reminders.
+ * Delegates to the database layer and returns the retrieved reminders,
+ * logging an error if the underlying async call fails.
+ *
+ * @returns {Promise<Array|undefined>} A promise resolving to an array of reminders, or undefined on error.
+ */
+export const GetReminders = async () => {
+  try{
+    return await GetRemindersAsync();
+  }
+  catch(e){
+    console.log(
+      "[REMINDER-HANDLER] error processing get reminders request",
+      e
+    );
+  }
+}
+
+/**
+ * Wrapper around InsertRemindersAsync to insert one or more reminders.
+ * Forwards the provided reminders to the database layer and logs any error
+ * that occurs during the insert operation.
+ *
+ * @param {Array} reminders - Array of reminder objects to be inserted.
+ * @returns {Promise<void>} A promise that resolves when the insert completes or logs an error on failure.
+ */
+export const InsertReminders = async (reminders) => {
+  try{
+    await InsertRemindersAsync(reminders);
+  }
+  catch(e){
+    console.log(
+      "[REMINDER-HANDLER] error processing get reminders request",
+      e
+    );
+  }
+}
 
 /**
  * Validates a reminder date string against the allowed Moment.js date formats.
