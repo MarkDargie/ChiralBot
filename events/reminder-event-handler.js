@@ -1,10 +1,10 @@
 import { Events, ActivityType, Collection } from "discord.js";
 import { CustomEvent } from "../config/event.type.js";
 import { GetRemindersAsync } from "../database/database-handler.js";
+import { MapRemindersToCollection, CheckCurrentValidReminders } from "../library/modules/reminders/reminder-handler.js";
 
 export default {
-  // This event file handles the "ClientReady" event
-  name: Events.ClientReady, // The event name this module listens for
+  name: Events.ClientReady,
   customType: CustomEvent.Reminder,
   async execute(client) {
     try {
@@ -14,7 +14,6 @@ export default {
 
       if (!reminders.has("server-reminders")) {
         reminders.set("server-reminders", new Collection());
-        console.log("[READY] Setting Reminders: ", reminders);
       }
 
       const serverReminders = client.reminders.get("server-reminders");
@@ -23,11 +22,18 @@ export default {
 
       const databaseReminders = await GetRemindersAsync();
 
-      setInterval(async () => {
-        
-        console.log('[INTERVAL] Current Reminders Collection: ', serverReminders);
+      if(databaseReminders && databaseReminders.length > 0){
+        const mappedCollection = MapRemindersToCollection(databaseReminders, serverReminders);
+        reminders.set("server-reminders", mappedCollection);
+      }
 
-      }, 5000);
+      setInterval(async () => {
+        console.log('[INTERVAL] Current Reminders Collection Size: ', serverReminders.size);
+        const dueReminders = CheckCurrentValidReminders(serverReminders);
+        if(dueReminders && dueReminders.length > 0){
+
+        }
+      }, 5000); // check every minute for actual go-live
     } catch (e) {
       console.log(
         "[ERROR] error processing event handler logic [ClientReady-ReminderEventHandler]",

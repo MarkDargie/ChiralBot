@@ -2,16 +2,18 @@ CREATE OR REPLACE PROCEDURE chiral.insert_reminders(reminders json)
 LANGUAGE plpgsql
 AS $$
 BEGIN
-    INSERT INTO chiral.reminder (value, createduserid, createdserverid, active)
+    INSERT INTO chiral.reminder (body, timestamp, createduserid, createdserverid, active)
     SELECT
-        r.value,
+        r.body,
+		r.timestamp,
         r.createduserid,
         r.createdserverid,
         COALESCE(r.active, TRUE)
     FROM json_to_recordset(reminders) AS r(
-        value            text,
-        createduserid    text,
-        createdserverid  text,
+        body		      text,
+		timestamp 		  text,
+        createduserid     text,
+        createdserverid   text,
         active           boolean
     );
 END;

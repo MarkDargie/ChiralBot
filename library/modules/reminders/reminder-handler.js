@@ -1,5 +1,8 @@
 import moment from "moment";
-import { GetRemindersAsync, InsertRemindersAsync } from "../../../database/database-handler.js";
+import {
+  GetRemindersAsync,
+  InsertRemindersAsync,
+} from "../../../database/database-handler.js";
 // setting contant formats to use for mapping
 const momentDateFormats = ["DD-MM-YYYY", "DD-MM-YY", "DD-MM"];
 const momentTimeFormats = ["HH:mm", "HHmm", "HH"];
@@ -49,16 +52,12 @@ export const ProcessReminderDate = (reminderDate, reminderTime) => {
  * @returns {Promise<Array|undefined>} A promise resolving to an array of reminders, or undefined on error.
  */
 export const GetReminders = async () => {
-  try{
+  try {
     return await GetRemindersAsync();
+  } catch (e) {
+    console.log("[REMINDER-HANDLER] error processing get reminders request", e);
   }
-  catch(e){
-    console.log(
-      "[REMINDER-HANDLER] error processing get reminders request",
-      e
-    );
-  }
-}
+};
 
 /**
  * Wrapper around InsertRemindersAsync to insert one or more reminders.
@@ -69,16 +68,12 @@ export const GetReminders = async () => {
  * @returns {Promise<void>} A promise that resolves when the insert completes or logs an error on failure.
  */
 export const InsertReminders = async (reminders) => {
-  try{
+  try {
     await InsertRemindersAsync(reminders);
+  } catch (e) {
+    console.log("[REMINDER-HANDLER] error processing get reminders request", e);
   }
-  catch(e){
-    console.log(
-      "[REMINDER-HANDLER] error processing get reminders request",
-      e
-    );
-  }
-}
+};
 
 /**
  * Validates a reminder date string against the allowed Moment.js date formats.
@@ -119,5 +114,34 @@ export const CheckValidReminderTime = (reminderTime) => {
       e
     );
     return false;
+  }
+};
+
+export const MapRemindersToCollection = (reminders, serverCollection) => {
+  try {
+    let mappedCollection = serverCollection;
+    reminders.forEach((item, index) => {
+      mappedCollection.set(index + 1, item);
+    });
+    return mappedCollection;
+  } catch (e) {
+    console.log(
+      "[REMINDER-HANDLER] error processing mapping reminders to collection",
+      e
+    );
+    return null;
+  }
+};
+
+export const CheckCurrentValidReminders = (remindersCollection) => {
+  try {
+    const dateCheckTimeframe = [moment(Date.now()).add(-1, 'minute'), moment(Date.now()).add(1, 'minute')];
+    
+  } catch (e) {
+    console.log(
+      "[REMINDER-HANDLER] error processing checking valid reminders",
+      e
+    );
+    return [];
   }
 };

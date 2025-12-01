@@ -8,7 +8,7 @@ import { ConnectionPool } from "./config/db-config.js";
  */
 export async function GetRemindersAsync() {
   try {
-    const result = await ConnectionPool.query("SELECT * FROM chiral.reminder");
+    const result = await ConnectionPool.query("SELECT * FROM chiral.get_reminders()");
     console.log("[DATABASE] Calling Reminders: ", result.rows);
     return result.rows;
   } catch (e) {
@@ -30,7 +30,8 @@ export async function GetRemindersAsync() {
 export async function InsertRemindersAsync(reminders) {
   try {
     const mappedReminders = reminders.map((x) => ({
-      value: x.value,
+      body: x.body,
+      timestamp: x.timestamp,
       createduserid: x.userid,
       createdserverid: x.serverid,
       active: true,
@@ -38,6 +39,8 @@ export async function InsertRemindersAsync(reminders) {
 
     const remindersJson = JSON.stringify(mappedReminders);
     const query = "CALL chiral.insert_reminders($1::json);";
+
+    console.log("[DATABASE] Inserting Reminders: ", remindersJson);
 
     await ConnectionPool.query(query, [remindersJson]);
   } catch (e) {

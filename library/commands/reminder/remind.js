@@ -24,7 +24,6 @@ export default {
         .setDescription("Content of the reminder")
         .setRequired(true)
     )
-    // needs to handle dd-mm-yyyy / dd-mm or ddmm or dd
     .addStringOption((option) =>
       option
         .setName("date")
@@ -33,7 +32,6 @@ export default {
         .setMaxLength(10)
         .setMinLength(2)
     )
-    // needs to allow hours and minutes (14:30 or 1430 or just 14)
     .addStringOption((option) =>
       option
         .setName("time")
@@ -64,24 +62,26 @@ export default {
           const userId = interaction.member.id;
           const serverId = process.env.GUILD;
           const serverReminder = {
-            value: formattedDate,
+            id: crypto.randomUUID(),
+            body: normalisedReminder,
+            timestamp: formattedDate,
             userid: userId,
             serverid: serverId,
           };
-          // TODO need to figure out how we want to store these
-          // tb needs to store both value of reminder nad the datetime stamp
-          // 
           serverReminders.push(serverReminder);
-          currentServerReminders.set(userId, serverReminders);
+
+          const currentReminderAmount = currentServerReminders.length;
+
+          currentServerReminders.set((currentServerReminders.size + 1), serverReminders);
         }
 
-        await interaction.reply({
-          content: `Reminder Set: ${formattedDate} :calendar_spiral:`,
-        });
+        // await interaction.reply({
+        //   content: `Reminder Set: ${formattedDate} :calendar_spiral:`,
+        // });
 
-        if (serverReminders && serverReminders.length) {
-          await InsertReminders(serverReminders);
-        }
+        // if (serverReminders && serverReminders.length) {
+        //   await InsertReminders(serverReminders);
+        // }
       }
     } catch (e) {
       console.log("[ERROR] Error processing user command - [remind]", e);
