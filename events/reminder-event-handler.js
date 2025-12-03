@@ -27,13 +27,13 @@ export default {
         reminders.set("server-reminders", mappedCollection);
       }
 
-      setInterval(async () => {
-        console.log('[INTERVAL] Current Reminders Collection Size: ', serverReminders.size);
-        const dueReminders = CheckCurrentValidReminders(serverReminders);
-        if(dueReminders && dueReminders.length > 0){
+      // setInterval(async () => {
+      //   console.log('[INTERVAL] Current Reminders Collection Size: ', serverReminders.size);
+      //   const dueReminders = CheckCurrentValidReminders(serverReminders);
+      //   if(dueReminders && dueReminders.length > 0){
 
-        }
-      }, 5000); // check every minute for actual go-live
+      //   }
+      // }, 5000); // check every minute for actual go-live
     } catch (e) {
       console.log(
         "[ERROR] error processing event handler logic [ClientReady-ReminderEventHandler]",
